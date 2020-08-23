@@ -1,18 +1,30 @@
 #include <stdio.h>
 
-void openFileToEncryption()
+void openFileToEncryption(char** fileName)
 {
 	FILE* f_in;
-	fopen_s(&f_in, "try.txt", "r+");
+	char ch;
+
+	fopen_s(&f_in, fileName, "r+");
 	if (f_in == NULL)
 	{
 		printf("File not found\n");
+	}
+	else
+	{
+		ch = fgetc(f_in);
+		while (ch != EOF)
+		{
+			printf("%c", ch);
+			ch = fgetc(f_in);
+		}
+		printf("\n");
 	}
 }
 
 
 void main() {
-	openFileToEncryption();
+	openFileToEncryption("try.txt");
 
 	printf("test");
 }
