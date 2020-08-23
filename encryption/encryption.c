@@ -1,30 +1,51 @@
 #include <stdio.h>
 
-void openFileToEncryption(char** fileName)
+void exitError(char** messege)
 {
-	FILE* f_in;
-	char ch;
+	printf(messege);
+	printf("/n");
+	getchar();
+	exit(1);
+}
 
-	fopen_s(&f_in, fileName, "r+");
-	if (f_in == NULL)
+FILE* openFileToEncryption(char** fileName)
+{
+	FILE* file;
+	
+	fopen_s(&file, fileName, "r+");
+	if (file == NULL)
 	{
-		printf("File not found\n");
+		exitError("File not found.");
 	}
-	else
+	
+	return(file);
+}
+
+void encryptingFile(FILE* file, char** key)
+{
+	char ch = fgetc(file);
+
+	while (ch != EOF)
 	{
-		ch = fgetc(f_in);
-		while (ch != EOF)
-		{
-			printf("%c", ch);
-			ch = fgetc(f_in);
-		}
-		printf("\n");
+		printf("%c", ch);
+		ch = fgetc(file);
+	}
+	printf("\n");
+}
+
+int* keyEncoding(char** key_string)
+{
+	if (strlen(key_string) < 8) {
+		exitError("Key less than 8 characters.");
 	}
 }
 
 
 void main() {
-	openFileToEncryption("try.txt");
+	FILE *f_in = openFileToEncryption("try.txt");
 
-	printf("test");
+	encryptingFile(f_in, "key");
+	printf("Amazing");
+
+	
 }
