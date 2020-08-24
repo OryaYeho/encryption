@@ -10,9 +10,12 @@ void exitError(char** messege)
 
 FILE* openFile(char** fileName)
 {
+	// Input: File name to open.
+	// Do: Opens the file if possible. Otherwise, sends an error message.
+
 	FILE* file;
 
-	fopen_s(&file, fileName, "r+");
+	fopen_s(&file, fileName, "r");
 	if (file == NULL)
 	{
 		exitError("File not found.");
@@ -21,37 +24,75 @@ FILE* openFile(char** fileName)
 	return(file);
 }
 
-void encryptingFile(FILE* file, char** key)
+FILE* creatingFile(char** fileName)
 {
-	char ch = fgetc(file);
+	// Input: File name to creat.
+	// Do: Creating the file if possible. Otherwise, sends an error message.
+
+	FILE* file;
+
+	fopen_s(&file, fileName, "w");
+	if (file == NULL)
+	{
+		exitError("Cannot create a file.");
+	}
+
+	return(file);
+}
+
+void encryptingFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
+{
+	// Input:	f_in - A file that needs to encryption.
+	//			key_numbers - A key to encrypting.
+	//			lengthKey - Length of key.
+	//			f_out - A output file.
+	// Do:	Creating an encrypted file.
+
+	char ch = fgetc(f_in);
+	int keyIndex = 0;
 
 	while (ch != EOF)
 	{
 		printf("%c", ch);
-		ch = fgetc(file);
+		if (ch == ' ')
+		{
+			fputc(' ', f_out);
+		}
+		else
+		{
+			ch += key_numbers[keyIndex];
+			ch = ch % 256;
+			fputc(ch, f_out);
+
+			keyIndex++;
+			keyIndex %= lengthKey;
+		}
+		ch = fgetc(f_in);
 	}
-	printf("\n");
 }
 
-int* keyEncoding(char** key_string, int** key_numbers)
+int keyEncoding(char* key_string, int** p_key_numbers)
 {
-	// Input: key_string - String of key.
-	// Output: Array of number. The numbers is values ​​of the letters (A = 1).
+	// Input:	key_string - Pointer to string of key.
+	//			p_key_numbers - Pointer to array of values ​​of the letters (A = 1).
+	// Return: Length of key.
 	int lengthKey = strlen(key_string);
 	int i;
 	char ch;
+	int* key_numbers;
 
 	if (lengthKey < 8) {
 		exitError("Key less than 8 characters.");
 	}
 
-	*key_numbers = malloc(lengthKey * sizeof(int));
+	*p_key_numbers = malloc(lengthKey * sizeof(int));
 
 	for (i = 0; i < lengthKey; i++)
 	{
-		ch = *key_string + i;
-		*(*key_numbers + i) = ch - 'A' + 1;
+		ch = key_string[i];	
+		(*p_key_numbers)[i] = ch - 'A' + 1;
+		printf("%d", (*p_key_numbers)[i]);	
 	}
-
+	printf("\n");
 	return lengthKey;
 }

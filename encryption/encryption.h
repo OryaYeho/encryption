@@ -3,6 +3,7 @@
 
 void exitError(char** messege);
 FILE* openFile(char** fileName);
-void encryptingFile(FILE* file, char** key);
-int* keyEncoding(char** key_string, int** key_numbers);
+FILE* creatingFile(char** fileName);
+void encryptingFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out);
+int keyEncoding(char* key_string, int** p_key_numbers);
 
