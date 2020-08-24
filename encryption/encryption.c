@@ -40,12 +40,38 @@ FILE* creatingFile(char** fileName)
 	return(file);
 }
 
+int keyEncoding(char* key_string, int** p_key_numbers)
+{
+	// Input:	key_string - Pointer to string of key.
+	//			p_key_numbers - Pointer to array of values ​​of the letters (A = 1).
+	// Return: Length of key.
+	int lengthKey = strlen(key_string);
+	int i;
+	char ch;
+	int* key_numbers;
+
+	if (lengthKey < 8) {
+		exitError("Key less than 8 characters.");
+	}
+
+	*p_key_numbers = malloc(lengthKey * sizeof(int));
+
+	for (i = 0; i < lengthKey; i++)
+	{
+		ch = key_string[i];	
+		(*p_key_numbers)[i] = ch - 'A' + 1;
+		printf("%d", (*p_key_numbers)[i]);	
+	}
+	printf("\n");
+	return lengthKey;
+}
+
 void encryptingFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
 {
 	// Input:	f_in - A file that needs to encryption.
 	//			key_numbers - A key to encrypting.
 	//			lengthKey - Length of key.
-	//			f_out - A output file.
+	//			f_out - An encrypted file.
 	// Do:	Creating an encrypted file.
 
 	char ch = fgetc(f_in);
@@ -71,28 +97,37 @@ void encryptingFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
 	}
 }
 
-int keyEncoding(char* key_string, int** p_key_numbers)
+void decipheringFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
 {
-	// Input:	key_string - Pointer to string of key.
-	//			p_key_numbers - Pointer to array of values ​​of the letters (A = 1).
-	// Return: Length of key.
-	int lengthKey = strlen(key_string);
-	int i;
-	char ch;
-	int* key_numbers;
+	// Input:	f_in - A file that needs to decipher.
+	//			key_numbers - A key to encrypting.
+	//			lengthKey - Length of key.
+	//			f_out - A decoded file.
+	// Do:	Creating an encrypted file.
 
-	if (lengthKey < 8) {
-		exitError("Key less than 8 characters.");
-	}
+	char ch = fgetc(f_in);
+	int keyIndex = 0;
 
-	*p_key_numbers = malloc(lengthKey * sizeof(int));
-
-	for (i = 0; i < lengthKey; i++)
+	while (ch != EOF)
 	{
-		ch = key_string[i];	
-		(*p_key_numbers)[i] = ch - 'A' + 1;
-		printf("%d", (*p_key_numbers)[i]);	
+		printf("%c", ch);
+		if (ch == ' ')
+		{
+			fputc(' ', f_out);
+		}
+		else
+		{
+			ch -= key_numbers[keyIndex];
+			if (ch < 0)
+			{
+				ch += 256;
+			}
+
+			fputc(ch, f_out);
+
+			keyIndex++;
+			keyIndex %= lengthKey;
+		}
+		ch = fgetc(f_in);
 	}
-	printf("\n");
-	return lengthKey;
 }
