@@ -143,10 +143,10 @@
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="try.txt" />
+    <ClInclude Include="encryption.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="encryption.h" />
+    <Text Include="original.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

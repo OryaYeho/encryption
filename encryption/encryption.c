@@ -1,4 +1,5 @@
 ﻿#include "encryption.h"
+#include <io.h>
 
 void exitError(char** messege)
 {
@@ -131,3 +132,25 @@ void decipheringFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
 		ch = fgetc(f_in);
 	}
 }
+
+int deleteOriginalFile(FILE* file, const char* filename)
+{
+	if (fclose(file) != 0)
+	{
+		printf("A source file is not closed and therefore will not be deleted.\n");
+		return -1;
+	}
+
+	return remove(filename);
+}
+
+int renameEncryptedFile(FILE* file, const char* oldname, const char* newname)
+{
+	if (fclose(file) != 0)
+	{
+		printf("A encrypted  file is not closed.\n");
+	}
+
+	return rename(oldname, newname);
+}
+
