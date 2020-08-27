@@ -18,12 +18,24 @@
     <ClInclude Include="encryption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sha3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="password.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="encryption.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="password.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,5 +1,11 @@
 ﻿#include <stdio.h>
+#include <stdint.h>
+#include <inttypes.h>
+
+#include "sha3.h"
 #include "encryption.h"
+#include "password.h"
+
 
 #define TEMP_NAME "tempFile.txt"
 
@@ -8,13 +14,46 @@ void main(int argc, char* argv[]) {
 	FILE* f_in;
 	FILE* f_out;
 
-	char* password = argv[1];
+	char* password_string = argv[1];
 	char* filename = argv[2];
 	char* key_string = argv[3];
 	int actionFlag = atoi(argv[4]);
 
 	int* key_numbers;
 	int lengthKey,i;
+
+	//--------- password ---------
+	sha3_context contextPassword;
+	uint8_t* hashPassword;
+	
+
+	//hashPassword = create_sha3(password_string, strlen(password_string));
+
+	
+	sha3_Init256(&contextPassword);
+	sha3_SetFlags(&contextPassword, SHA3_FLAGS_KECCAK);
+	sha3_Update(&contextPassword, password_string, strlen(password_string));
+	hashPassword = sha3_Finalize(&contextPassword);
+	
+	
+	//printf("length password: %d\n", lengthPassword);
+	printf("password: %s\n",password_string);
+	printf("quality:  0x ");
+	for (i = 0; i < 32; i++)
+	{
+		//password = convert(&(realPassword[0]));
+		//printf("%02x", hashPassword[i]);
+		
+		if (ORIGINAL_PASSWORD[i] != ((int)(hashPassword[i])))
+		{
+			printf("false\n");
+		}
+		
+		printf("%d," ,((int)hashPassword[i]));
+	}
+	printf("\n");
+	//----------------------------
+
 
 	f_in = openFile(filename);
 	f_out = creatingFile(TEMP_NAME);
@@ -24,10 +63,12 @@ void main(int argc, char* argv[]) {
 	if (actionFlag == 1)
 	{
 		encryptingFile(f_in, key_numbers, lengthKey, f_out);
+		printf("Encryption has been performed.\n");
 	}
 	else
 	{
-		printf("Decoding operation\n");
+		decipheringFile(f_in, key_numbers, lengthKey, f_out);
+		printf("The decoding was performed.\n");
 	}
 
 	if (deleteOriginalFile(f_in, filename) != 0)

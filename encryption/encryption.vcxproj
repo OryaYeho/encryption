@@ -141,9 +141,13 @@
   <ItemGroup>
     <ClCompile Include="encryption.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="password.c" />
+    <ClCompile Include="sha3.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encryption.h" />
+    <ClInclude Include="password.h" />
+    <ClInclude Include="sha3.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="original.txt" />
