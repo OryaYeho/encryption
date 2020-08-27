@@ -13,3 +13,18 @@ uint8_t* create_sha3(char* password_string, int lengthPassword)
 	hashPassword1 = sha3_Finalize(&contextPassword);
 	return hashPassword1;
 }
+
+int checkingCorrectnessPassword(uint8_t* hashPassword)
+{
+	int i;
+
+	for (i = 0; i < 32; i++)
+	{
+		if (ORIGINAL_PASSWORD[i] != ((int)(hashPassword[i])))
+		{
+			return 0;
+		}
+	}
+
+	return 1;
+}

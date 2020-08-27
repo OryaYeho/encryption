@@ -61,9 +61,7 @@ int keyEncoding(char* key_string, int** p_key_numbers)
 	{
 		ch = key_string[i];	
 		(*p_key_numbers)[i] = ch - 'A' + 1;
-		printf("%d", (*p_key_numbers)[i]);	
 	}
-	printf("\n");
 	return lengthKey;
 }
 
@@ -80,20 +78,13 @@ void encryptingFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
 
 	while (ch != EOF)
 	{
-		printf("%c", ch);
-		if (ch == ' ')
-		{
-			fputc(' ', f_out);
-		}
-		else
-		{
-			ch += key_numbers[keyIndex];
-			ch = ch % 256;
-			fputc(ch, f_out);
+		ch += key_numbers[keyIndex];
+		ch = ch % 256;
+		fputc(ch, f_out);
 
-			keyIndex++;
-			keyIndex %= lengthKey;
-		}
+		keyIndex++;
+		keyIndex %= lengthKey;
+
 		ch = fgetc(f_in);
 	}
 }
@@ -111,24 +102,18 @@ void decipheringFile(FILE* f_in, int* key_numbers, int lengthKey, FILE* f_out)
 
 	while (ch != EOF)
 	{
-		printf("%c", ch);
-		if (ch == ' ')
+		
+		ch -= key_numbers[keyIndex];
+		if (ch < 0)
 		{
-			fputc(' ', f_out);
+			ch += 256;
 		}
-		else
-		{
-			ch -= key_numbers[keyIndex];
-			if (ch < 0)
-			{
-				ch += 256;
-			}
 
-			fputc(ch, f_out);
+		fputc(ch, f_out);
 
-			keyIndex++;
-			keyIndex %= lengthKey;
-		}
+		keyIndex++;
+		keyIndex %= lengthKey;
+		
 		ch = fgetc(f_in);
 	}
 }

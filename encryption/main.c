@@ -34,16 +34,19 @@ void main(int argc, char* argv[]) {
 	sha3_SetFlags(&contextPassword, SHA3_FLAGS_KECCAK);
 	sha3_Update(&contextPassword, password_string, strlen(password_string));
 	hashPassword = sha3_Finalize(&contextPassword);
+
+	if (checkingCorrectnessPassword(hashPassword) == 0)
+	{
+		exitError("Wrong password!");
+	}
 	
 	
-	//printf("length password: %d\n", lengthPassword);
-	printf("password: %s\n",password_string);
-	printf("quality:  0x ");
+	// printf("password: %s\n",password_string);
+	// printf("quality:  0x ");
+
+	/*
 	for (i = 0; i < 32; i++)
 	{
-		//password = convert(&(realPassword[0]));
-		//printf("%02x", hashPassword[i]);
-		
 		if (ORIGINAL_PASSWORD[i] != ((int)(hashPassword[i])))
 		{
 			printf("false\n");
@@ -52,6 +55,7 @@ void main(int argc, char* argv[]) {
 		printf("%d," ,((int)hashPassword[i]));
 	}
 	printf("\n");
+	*/
 	//----------------------------
 
 
@@ -84,12 +88,13 @@ void main(int argc, char* argv[]) {
 	}
 
 
-
+	/*
 	printf("\nnum of argument is: %d.\n",argc);
 	printf("password is: %s\n", argv[1]);
 	printf("filename is: %s\n", argv[2]);
 	printf("key is: %s\n", argv[3]);
 	printf("flag is: %s\n", argv[4]);
+	*/
 
 
 	free(key_numbers);
