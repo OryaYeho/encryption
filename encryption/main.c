@@ -7,12 +7,14 @@
 #include "password.h"
 
 
-#define TEMP_NAME "tempFile.txt"
+#define TEMP_NAME "tempFile"
 
 
 void main(int argc, char* argv[]) {
-	FILE* f_in;
-	FILE* f_out;
+	FILE* fd_in;
+	FILE* fd_out;
+	//int fd_in, fd_out;
+
 
 	char* password_string = argv[1];
 	char* filename = argv[2];
@@ -56,26 +58,27 @@ void main(int argc, char* argv[]) {
 	}
 	printf("\n");
 	*/
+
 	//----------------------------
-
-
-	f_in = openFile(filename);
-	f_out = creatingFile(TEMP_NAME);
+	/*
+	fd_in = openFileIn(filename);
+	fd_out = creatFileOut(TEMP_NAME);
 
 	lengthKey = keyEncoding(key_string, &key_numbers);
 
 	if (actionFlag == 1)
 	{
-		encryptingFile(f_in, key_numbers, lengthKey, f_out);
+		encryptingFile1(fd_in, fd_out, key_numbers, lengthKey);
 		printf("Encryption has been performed.\n");
 	}
 	else
 	{
-		decipheringFile(f_in, key_numbers, lengthKey, f_out);
+		decipheringFile1(fd_in, fd_out, key_numbers, lengthKey);
 		printf("The decoding was performed.\n");
 	}
 
-	if (deleteOriginalFile(f_in, filename) != 0)
+	
+	if (deleteOriginalFile1(fd_in, filename) != 0)
 	{
 		printf("Unable to delete the original file.\n");
 		printf("The encrypted file is named '");
@@ -84,9 +87,42 @@ void main(int argc, char* argv[]) {
 	}
 	else
 	{
-		renameEncryptedFile(f_out, TEMP_NAME, filename);
+		renameEncryptedFile1(fd_out, TEMP_NAME, filename);
+	}
+	*/
+
+
+
+	fd_in = openFile2(filename);
+	fd_out = creatingFile2(TEMP_NAME);
+
+	lengthKey = keyEncoding(key_string, &key_numbers);
+
+	if (actionFlag == 1)
+	{
+		//encryptingFile(f_in, key_numbers, lengthKey, f_out);
+		encryptingFile2(fd_in, fd_out, key_numbers, lengthKey);
+		printf("Encryption has been performed.\n");
+	}
+	else
+	{
+		//decipheringFile(f_in, key_numbers, lengthKey, f_out);
+		decipheringFile2(fd_in, fd_out, key_numbers, lengthKey);
+		printf("The decoding was performed.\n");
 	}
 
+	if (deleteOriginalFile(fd_in, filename) != 0)
+	{
+		printf("Unable to delete the original file.\n");
+		printf("The encrypted file is named '");
+		printf(TEMP_NAME);
+		printf("'.\n");
+	}
+	else
+	{
+		renameEncryptedFile(fd_out, TEMP_NAME, filename);
+	}
+	
 
 	/*
 	printf("\nnum of argument is: %d.\n",argc);
@@ -96,7 +132,7 @@ void main(int argc, char* argv[]) {
 	printf("flag is: %s\n", argv[4]);
 	*/
 
-
+	
 	free(key_numbers);
 	return 0;
 }
