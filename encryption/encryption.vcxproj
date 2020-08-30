@@ -152,9 +152,6 @@
   <ItemGroup>
     <Text Include="original.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="2.jpg" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
