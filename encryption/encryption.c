@@ -1,11 +1,6 @@
 ﻿#include "encryption.h"
 #include <io.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <wchar.h>
 
-#define _SCL_SECURE_NO_WARNINGS
 #define BUFFER_SIZE 1
 
 void exitError(char** messege)
@@ -19,7 +14,7 @@ void exitError(char** messege)
 FILE* openFile(char** fileName)
 {
 	// Input: File name to open.
-	// Do: Opens the file if possible. Otherwise, sends an error message.
+	// Do: Opens the file if possible. Otherwise, sends an error message and exits.
 
 	FILE* file;
 
@@ -35,7 +30,7 @@ FILE* openFile(char** fileName)
 FILE* creatingFile(char** fileName)
 {
 	// Input: File name to creat.
-	// Do: Creating the file if possible. Otherwise, sends an error message.
+	// Do: Creating the file if possible. Otherwise, sends an error message and exits.
 
 	FILE* file;
 
@@ -50,7 +45,7 @@ FILE* creatingFile(char** fileName)
 
 int keyEncoding(char* key_string, int** p_key_numbers)
 {
-	// Input:	key_string - Pointer to string of key.
+	// Input:	key_string - string of key.
 	//			p_key_numbers - Pointer to array of values ​​of the letters (A = 1).
 	// Return: Length of key.
 	int lengthKey = strlen(key_string);
@@ -67,31 +62,33 @@ int keyEncoding(char* key_string, int** p_key_numbers)
 	for (i = 0; i < lengthKey; i++)
 	{
 		ch = key_string[i];	
-		(*p_key_numbers)[i] = ch - 'A' + 1;
+		//(*p_key_numbers)[i] = ch - 'A' + 1;
+		(*p_key_numbers)[i] = ch;
 	}
 	return lengthKey;
 }
 
-void encryptingFile(FILE* fd_in, FILE* fd_out, int* key_numbers, int lengthKey) {
-	// Input:	f_in - A file that needs to encryption.
-	//			key_numbers - A key to encrypting.
+//void encryptingFile(FILE* fd_in, FILE* fd_out, int* key, int lengthKey) {
+void encryptingFile(FILE* fd_in, FILE* fd_out, char* key, int lengthKey1) {
+	// Input:	fd_in - A file that needs to encryption.
+	//			fd_out - An encrypted file.
+	//			key - A key to encrypting.
 	//			lengthKey - Length of key.
-	//			f_out - An encrypted file.
 	// Do:	Creating an encrypted file.
 
+	int lengthKey = strlen(key);
 	char buffer;
 	int sumByteReaded;
 	int keyIndex = 0;
 
 	while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
 	{
-		//printf("&c", buffer);
 		if (sumByteReaded == -1)
 		{
 			exitError("Error reading file");
 		}
 
-		buffer += key_numbers[keyIndex];
+		buffer += key[keyIndex];
 		buffer = buffer % 256;
 
 		if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)
@@ -99,20 +96,21 @@ void encryptingFile(FILE* fd_in, FILE* fd_out, int* key_numbers, int lengthKey) 
 			exitError("Error writing file");
 		}
 
-
 		keyIndex++;
 		keyIndex %= lengthKey;
 	}
 }
 
-void decipheringFile(FILE* fd_in, FILE* fd_out, int* key_numbers, int lengthKey)
+//void decipheringFile(FILE* fd_in, FILE* fd_out, int* key, int lengthKey)
+void decipheringFile(FILE* fd_in, FILE* fd_out, char* key, int lengthKey1)
 {
-	// Input:	f_in - A file that needs to decipher.
-	//			key_numbers - A key to encrypting.
+	// Input:	fd_in - A file that needs to decipher.
+	//			fd_out - A decoded file.
+	//			key - A key to encrypting.
 	//			lengthKey - Length of key.
-	//			f_out - A decoded file.
 	// Do:	Creating an encrypted file.
 
+	int lengthKey = strlen(key);
 	char buffer;
 	int sumByteReaded;
 	int keyIndex = 0;
@@ -124,7 +122,7 @@ void decipheringFile(FILE* fd_in, FILE* fd_out, int* key_numbers, int lengthKey)
 			exitError("Error reading file");
 		}
 
-		buffer -= key_numbers[keyIndex];
+		buffer -= key[keyIndex];
 		if (buffer < 0)
 		{
 			buffer += 256;
