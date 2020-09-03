@@ -59,5 +59,6 @@ void main(int argc, char* argv[]) {
 		renameEncryptedFile(fd_out, TEMP_NAME, filename);
 	}
 
+	getch();
 	return 0;
 }
