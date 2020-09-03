@@ -43,33 +43,7 @@ FILE* creatingFile(char** fileName)
 	return(file);
 }
 
-int keyEncoding(char* key_string, int** p_key_numbers)
-{
-	// Input:	key_string - string of key.
-	//			p_key_numbers - Pointer to array of values ​​of the letters (A = 1).
-	// Return: Length of key.
-	int lengthKey = strlen(key_string);
-	int i;
-	char ch;
-	int* key_numbers;
-
-	if (lengthKey < 8) {
-		exitError("Key less than 8 characters.");
-	}
-
-	*p_key_numbers = malloc(lengthKey * sizeof(int));
-
-	for (i = 0; i < lengthKey; i++)
-	{
-		ch = key_string[i];	
-		//(*p_key_numbers)[i] = ch - 'A' + 1;
-		(*p_key_numbers)[i] = ch;
-	}
-	return lengthKey;
-}
-
-//void encryptingFile(FILE* fd_in, FILE* fd_out, int* key, int lengthKey) {
-void encryptingFile(FILE* fd_in, FILE* fd_out, char* key, int lengthKey1) {
+void encryptingFile(FILE* fd_in, FILE* fd_out, char* key) {
 	// Input:	fd_in - A file that needs to encryption.
 	//			fd_out - An encrypted file.
 	//			key - A key to encrypting.
@@ -101,8 +75,7 @@ void encryptingFile(FILE* fd_in, FILE* fd_out, char* key, int lengthKey1) {
 	}
 }
 
-//void decipheringFile(FILE* fd_in, FILE* fd_out, int* key, int lengthKey)
-void decipheringFile(FILE* fd_in, FILE* fd_out, char* key, int lengthKey1)
+void decipheringFile(FILE* fd_in, FILE* fd_out, char* key)
 {
 	// Input:	fd_in - A file that needs to decipher.
 	//			fd_out - A decoded file.

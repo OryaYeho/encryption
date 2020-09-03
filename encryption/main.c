@@ -7,8 +7,6 @@
 
 #define TEMP_NAME "tempFile"
 
-//enum State { True = 1, False = 0 };
-
 void main(int argc, char* argv[]) {
 	FILE* fd_in;
 	FILE* fd_out;
@@ -17,14 +15,11 @@ void main(int argc, char* argv[]) {
 	char* filename = argv[2];
 	char* key = argv[3];
 	int actionFlag = atoi(argv[4]);
-
-	int* key_numbers;
-	int lengthKey,i;
+	int i;
 
 	sha3_context contextPassword;
 	uint8_t* hashPassword;
-	
-	//hashPassword = create_sha3(password_string, strlen(password_string));
+
 
 	sha3_Init256(&contextPassword);
 	sha3_SetFlags(&contextPassword, SHA3_FLAGS_KECCAK);
@@ -41,18 +36,14 @@ void main(int argc, char* argv[]) {
 	fd_in = openFile(filename);
 	fd_out = creatingFile(TEMP_NAME);
 
-	lengthKey = keyEncoding(key, &key_numbers);
-
 	if (actionFlag == 1)
 	{
-		//encryptingFile(fd_in, fd_out, key_numbers, lengthKey);
-		encryptingFile(fd_in, fd_out, key, lengthKey);
+		encryptingFile(fd_in, fd_out, key);
 		printf("Encryption has been performed.\n");
 	}
 	else
 	{
-		//decipheringFile(fd_in, fd_out, key_numbers, lengthKey);
-		decipheringFile(fd_in, fd_out, key, lengthKey);
+		decipheringFile(fd_in, fd_out, key);
 		printf("The decoding was performed.\n");
 	}
 
@@ -67,8 +58,6 @@ void main(int argc, char* argv[]) {
 	{
 		renameEncryptedFile(fd_out, TEMP_NAME, filename);
 	}
-	
-	free(key_numbers);
 
 	return 0;
 }
