@@ -4,14 +4,49 @@
 #include "sha3.h"
 #include "encryption.h"
 #include "logIn.h"
+#include "des.h"
 
 #define TEMP_NAME "tempFile"
 
-void crypt(void (*action_fun)(FILE*, FILE*,char*), char* message) {
+void crypt(void (*action_fun)(FILE*, FILE*, char*), char* message);
+
+
+void main(int argc, char* argv[]) {
+	char action;
+
+	//logIn();
+
+	printf("What are you want to do:\n");
+	printf(" 1 - To do encryption to file.\n");
+	printf(" 2 - To do decryption to file.\n");
+	action = getchar();
+
+	switch (action)
+	{
+	case '1':
+		crypt(encryptingFile, "Encryption has been performed.");
+		break;
+	case '2':
+		crypt(decryptingFile, "The decoding was performed.");
+		break;
+	/*case '3':
+		crypt(encrypt_des, "Encryption has been performed.");
+		break;
+	case '4':
+		crypt(decrypt_des, "The decoding was performed.");
+		break;*/
+	default:
+		exitError("Wrong action!");
+	}
+	
+	return 0;
+}
+
+void crypt(void (*action_fun)(FILE*, FILE*, char*), char* message) {
 	// input: pointer to function to action and message to print when that action was performed.
 	// do: getting filename and key from the user and call to function of action with this parameters.
 
-	
+
 	FILE* fd_in;
 	FILE* fd_out = creatingFile(TEMP_NAME);
 	char filename[20];
@@ -41,29 +76,4 @@ void crypt(void (*action_fun)(FILE*, FILE*,char*), char* message) {
 	{
 		renameEncryptedFile(fd_out, TEMP_NAME, filename);
 	}
-}
-
-void main(int argc, char* argv[]) {
-	char action;
-
-	//logIn();
-
-	printf("What are you want to do:\n");
-	printf(" 1 - To do encryption to file.\n");
-	printf(" 2 - To do decryption to file.\n");
-	action = getchar();
-
-	switch (action)
-	{
-	case '1':
-		crypt(encryptingFile, "Encryption has been performed.");
-		break;
-	case '2':
-		crypt(decryptingFile, "The decoding was performed.");
-		break;
-	default:
-		exitError("Wrong action!");
-	}
-	
-	return 0;
 }

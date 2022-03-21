@@ -5,8 +5,8 @@
 
 void exitError(char** messege)
 {
-	printf(messege);
-	printf("\n");
+	// Do: printing an error message and exiting from the process.
+	printf("%s\n",messege);
 	getch();
 	exit(1);
 }
@@ -81,7 +81,7 @@ void decryptingFile(FILE* fd_in, FILE* fd_out, char* key)
 	//			fd_out - A decoded file.
 	//			key - A key to encrypting.
 	//			lengthKey - Length of key.
-	// Do:	Creating an encrypted file.
+	// Do:	Makes decoding to file..
 
 	int lengthKey = strlen(key);
 	char buffer;
