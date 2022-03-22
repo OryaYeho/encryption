@@ -3,7 +3,7 @@
 
 #define BUFFER_SIZE 1
 
-void exitError(char** messege)
+void exitError(char* messege)
 {
 	// Do: printing an error message and exiting from the process.
 	printf("%s\n",messege);
@@ -98,7 +98,7 @@ void decryptingFile(FILE* fd_in, FILE* fd_out, char* key)
 		buffer -= key[keyIndex];
 		if (buffer < 0)
 		{
-			buffer += 256;
+			buffer += (char)256;
 		}
 
 		if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)

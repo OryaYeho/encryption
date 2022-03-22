@@ -32,7 +32,7 @@
 #define _DES_H
 
  //Dependencies
-#include "core/crypto.h"
+#include "crypto.h"
 
 //DES block size
 #define DES_BLOCK_SIZE 8
