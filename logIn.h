@@ -10,5 +10,4 @@
 extern const int ORIGINAL_PASSWORD[LENGTH_ORIGINAL_PASSWORD];
 
 int checkPassword(uint8_t* hashPassword);
-
-//uint8_t* create_sha3(char* password_string, int lengthPassword); // not using!!
+void logIn();

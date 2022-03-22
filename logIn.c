@@ -18,6 +18,7 @@ int checkPassword(uint8_t* hashPassword)
 	return 1;
 }
 
+
 void logIn() {
 
 	char password[20];
@@ -36,5 +37,4 @@ void logIn() {
 		exitError("Wrong password!");
 	else
 		printf("Logged in!\n\n");
-
 }

@@ -3,15 +3,14 @@
 
 #define BUFFER_SIZE 1
 
-void exitError(char** messege)
+void exitError(const char* message)
 {
-	printf(messege);
-	printf("\n");
-	getch();
+	puts(message);
+	getchar();
 	exit(1);
 }
 
-FILE* openFile(char** fileName)
+FILE* openFile(char* fileName)
 {
 	// Input: File name to open.
 	// Do: Opens the file if possible. Otherwise, sends an error message and exits.
@@ -27,7 +26,7 @@ FILE* openFile(char** fileName)
 	return(file);
 }
 
-FILE* creatingFile(char** fileName)
+FILE* creatingFile(char* fileName)
 {
 	// Input: File name to creat.
 	// Do: Creating the file if possible. Otherwise, sends an error message and exits.
@@ -98,7 +97,7 @@ void decryptingFile(FILE* fd_in, FILE* fd_out, char* key)
 		buffer -= key[keyIndex];
 		if (buffer < 0)
 		{
-			buffer += 256;
+			buffer += (char)256;
 		}
 
 		if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)

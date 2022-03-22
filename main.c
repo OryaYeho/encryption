@@ -10,7 +10,6 @@
 void crypt(void (*action_fun)(FILE*, FILE*,char*), char* message) {
 	// input: pointer to function to action and message to print when that action was performed.
 	// do: getting filename and key from the user and call to function of action with this parameters.
-
 	
 	FILE* fd_in;
 	FILE* fd_out = creatingFile(TEMP_NAME);
@@ -25,7 +24,6 @@ void crypt(void (*action_fun)(FILE*, FILE*,char*), char* message) {
 	scanf_s("%s", key, 512);
 	if (strlen(key) < 8)
 		exitError("The key is too short!");
-
 
 	action_fun(fd_in, fd_out, key);
 	puts(message);
@@ -43,10 +41,11 @@ void crypt(void (*action_fun)(FILE*, FILE*,char*), char* message) {
 	}
 }
 
+
 void main(int argc, char* argv[]) {
 	char action;
 
-	//logIn();
+	logIn();
 
 	printf("What are you want to do:\n");
 	printf(" 1 - To do encryption to file.\n");
