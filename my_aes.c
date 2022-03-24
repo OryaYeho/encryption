@@ -1,4 +1,7 @@
-﻿#include "my_aes.h"
+﻿#include <io.h>
+#include <stdio.h>
+
+#include "my_aes.h"
 
 
 void encrypt_aes(FILE* fd_in, FILE* fd_out, char* key_str) {
@@ -13,29 +16,30 @@ void encrypt_aes(FILE* fd_in, FILE* fd_out, char* key_str) {
 	int sumByteReaded;
 	int keyIndex = 0;
 
-	AES_ctx key;		 // <<<<<<<
-	key->RoundKey = (uint8_t*)key_str;
+	
+	//AES_ctx key;		 // <<<<<<<
+	//key->RoundKey = (uint8_t*)key_str;
 
-	while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
-	{
-		if (sumByteReaded == -1)
-		{
-			exitError("Error reading file");
-		}
+	//while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
+	//{
+	//	if (sumByteReaded == -1)
+	//	{
+	//		exitError("Error reading file");
+	//	}
 
-		AES_ECB_encrypt(key, &buf);
-		//desEncryptBlock(&key, &buffer, &buffer)
-		/*buffer += key[keyIndex];
-		buffer = buffer % 256;*/
+	//	//AES_ECB_encrypt(key, &buf);
+	//	//desEncryptBlock(&key, &buffer, &buffer)
+	//	/*buffer += key[keyIndex];
+	//	buffer = buffer % 256;*/
 
-		if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)
-		{
-			exitError("Error writing file");
-		}
+	//	if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)
+	//	{
+	//		exitError("Error writing file");
+	//	}
 
-		/*keyIndex++;
-		keyIndex %= lengthKey;*/
-	}
+	//	/*keyIndex++;
+	//	keyIndex %= lengthKey;*/
+	//}
 
 
 }
@@ -59,26 +63,26 @@ void decrypt_des(FILE* fd_in, FILE* fd_out, char* key_str)
 		(uint32_t)key_str[2] << 8 |
 		(uint32_t)key_str[3];
 
-	while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
-	{
-		if (sumByteReaded == -1)
-		{
-			exitError("Error reading file");
-		}
+	//while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
+	//{
+	//	if (sumByteReaded == -1)
+	//	{
+	//		exitError("Error reading file");
+	//	}
 
-		//AES_ECB_encrypt(const struct AES_ctx* ctx, uint8_t * buf)
-		/*buffer -= key[keyIndex];
-		if (buffer < 0)
-		{
-			buffer += 256;
-		}*/
+	//	//AES_ECB_encrypt(const struct AES_ctx* ctx, uint8_t * buf)
+	//	/*buffer -= key[keyIndex];
+	//	if (buffer < 0)
+	//	{
+	//		buffer += 256;
+	//	}*/
 
-		if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)
-		{
-			exitError("Error writing file");
-		}
+	//	if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)
+	//	{
+	//		exitError("Error writing file");
+	//	}
 
-		/*keyIndex++;
-		keyIndex %= lengthKey;*/
-	}
+	//	/*keyIndex++;
+	//	keyIndex %= lengthKey;*/
+	//}
 }

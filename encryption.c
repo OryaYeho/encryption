@@ -1,5 +1,7 @@
-﻿#include "encryption.h"
-#include <io.h>
+﻿#include <io.h>
+
+#include "encryption.h"
+#include "aes.h"
 
 #define BUFFER_SIZE 1
 
@@ -11,7 +13,7 @@ void exitError(char* messege)
 	exit(1);
 }
 
-FILE* openFile(char** fileName)
+FILE* openFile(char* fileName)
 {
 	// Input: File name to open.
 	// Do: Opens the file if possible. Otherwise, sends an error message and exits.
@@ -27,7 +29,7 @@ FILE* openFile(char** fileName)
 	return(file);
 }
 
-FILE* creatingFile(char** fileName)
+FILE* creatingFile(char* fileName)
 {
 	// Input: File name to creat.
 	// Do: Creating the file if possible. Otherwise, sends an error message and exits.
@@ -130,4 +132,40 @@ int renameEncryptedFile(FILE* file, const char* oldname, const char* newname)
 	}
 
 	return rename(oldname, newname);
+}
+
+void encryptingAES_File(FILE* fd_in, FILE* fd_out, char* key){
+	// Input:	fd_in - A file that needs to encryption.
+	//			fd_out - An encrypted file.
+	//			key - A key to encrypting.
+	//			lengthKey - Length of key.
+	// Do:	Creating an encrypted file.
+
+	int lengthKey = strlen(key);
+	char buffer;
+	int sumByteReaded;
+	int keyIndex = 0;
+
+	uint8_t* w; // expanded key
+	w = aes_init(sizeof(key));
+	aes_key_expansion((uint8_t * )key, w);
+
+	while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
+	{
+		if (sumByteReaded == -1)
+		{
+			exitError("Error reading file");
+		}
+
+		/*buffer += key[keyIndex];
+		buffer = buffer % 256;*/
+
+		if (fwrite(&buffer, BUFFER_SIZE, 1, fd_out) == -1)
+		{
+			exitError("Error writing file");
+		}
+
+		/*keyIndex++;
+		keyIndex %= lengthKey;*/
+	}
 }

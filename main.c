@@ -11,7 +11,7 @@
 void crypt(void (*action_fun)(FILE*, FILE*, char*), char* message);
 
 
-void main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	char action;
 
 	//logIn();
@@ -30,7 +30,7 @@ void main(int argc, char* argv[]) {
 		crypt(decryptingFile, "The decoding was performed.");
 		break;
 	case '3':
-		crypt(encrypt_aes, "Encryption has been performed.");
+		crypt(encryptingAES_File, "Encryption has been performed.");
 		break;
 	/*case '4':
 		crypt(decrypt_des, "The decoding was performed.");
@@ -58,7 +58,7 @@ void crypt(void (*action_fun)(FILE*, FILE*, char*), char* message) {
 
 	printf("\nEnter key: ");
 	scanf_s("%s", key, 512);
-	if (strlen(key) < 8)
+	if (strlen((int)key) < 8)
 		exitError("The key is too short!");
 
 
