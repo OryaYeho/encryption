@@ -4,7 +4,7 @@
 #include "sha3.h"
 #include "encryption.h"
 #include "logIn.h"
-//#include "des.h"
+#include "my_aes.h"
 
 #define TEMP_NAME "tempFile"
 
@@ -14,7 +14,7 @@ void crypt(void (*action_fun)(FILE*, FILE*, char*), char* message);
 void main(int argc, char* argv[]) {
 	char action;
 
-	logIn();
+	//logIn();
 
 	printf("What are you want to do:\n");
 	printf(" 1 - To do encryption to file.\n");
@@ -29,10 +29,10 @@ void main(int argc, char* argv[]) {
 	case '2':
 		crypt(decryptingFile, "The decoding was performed.");
 		break;
-	/*case '3':
-		crypt(encrypt_des, "Encryption has been performed.");
+	case '3':
+		crypt(encrypt_aes, "Encryption has been performed.");
 		break;
-	case '4':
+	/*case '4':
 		crypt(decrypt_des, "The decoding was performed.");
 		break;*/
 	default:

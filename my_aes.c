@@ -1,7 +1,7 @@
-﻿#include "des.h"
-#include <io.h>
+﻿#include "my_aes.h"
 
-void encrypt_des(FILE* fd_in, FILE* fd_out, char* key_str) {
+
+void encrypt_aes(FILE* fd_in, FILE* fd_out, char* key_str) {
 	// Input:	fd_in - A file that needs to encryption.
 	//			fd_out - An encrypted file.
 	//			key - A key to encrypting.
@@ -13,11 +13,8 @@ void encrypt_des(FILE* fd_in, FILE* fd_out, char* key_str) {
 	int sumByteReaded;
 	int keyIndex = 0;
 
-	DesContext key;		 // <<<<<<<
-	key = (uint32_t)key_str[0] << 24 |
-		(uint32_t)key_str[1] << 16 |
-		(uint32_t)key_str[2] << 8 |
-		(uint32_t)key_str[3];
+	AES_ctx key;		 // <<<<<<<
+	key->RoundKey = (uint8_t*)key_str;
 
 	while ((sumByteReaded = fread(&buffer, BUFFER_SIZE, 1, fd_in)) != 0)
 	{
@@ -26,7 +23,8 @@ void encrypt_des(FILE* fd_in, FILE* fd_out, char* key_str) {
 			exitError("Error reading file");
 		}
 
-		desEncryptBlock(&key, &buffer, &buffer)
+		AES_ECB_encrypt(key, &buf);
+		//desEncryptBlock(&key, &buffer, &buffer)
 		/*buffer += key[keyIndex];
 		buffer = buffer % 256;*/
 
@@ -46,7 +44,7 @@ void decrypt_des(FILE* fd_in, FILE* fd_out, char* key_str)
 {
 	// Input:	fd_in - A file that needs to decipher.
 	//			fd_out - A decoded file.
-	//			key - A key to encrypting.
+	//			key - decryption key
 	//			lengthKey - Length of key.
 	// Do:	Makes decoding to file..
 
@@ -68,7 +66,7 @@ void decrypt_des(FILE* fd_in, FILE* fd_out, char* key_str)
 			exitError("Error reading file");
 		}
 
-		desDecryptBlock(&key, &buffer, &buffer)
+		//AES_ECB_encrypt(const struct AES_ctx* ctx, uint8_t * buf)
 		/*buffer -= key[keyIndex];
 		if (buffer < 0)
 		{
